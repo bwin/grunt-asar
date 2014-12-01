@@ -35,9 +35,13 @@
     "grunt": "~0.4.0"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "grunt",
+    "asar",
+    "atom-shell"
   ],
   "dependencies": {
-    "asar": "^0.1.1"
+    "asar": "^0.1.1",
+    "glob": "^4.3.0"
   }
 }
