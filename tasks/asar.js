@@ -35,8 +35,6 @@ function generateAsarArchive(srcPath, destFile, cb) {
       }
     }
 
-    console.log("files", files);
-
     disk.writeFilesystem(destFile, filesystem, files);
     cb(null);
   });
