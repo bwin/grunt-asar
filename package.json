@@ -41,6 +41,7 @@
     "atom-shell"
   ],
   "dependencies": {
-    "asar": "^0.1.1"
+    "asar": "^0.1.1",
+    "glob": "^4.3.0"
   }
 }
