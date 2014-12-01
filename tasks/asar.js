@@ -11,7 +11,6 @@
 var path = require('path');
 var fs = require('fs');
 
-var asar = require('asar');//!
 var Filesystem = require('asar/lib/filesystem');
 var disk = require('asar/lib/disk');
 
@@ -67,7 +66,6 @@ module.exports = function(grunt) {
       // to create the dir if necessary we're creating an empty file.
       grunt.file.write(dest, '');
       
-      //asar.createPackage(f.src[0], dest, function(){eachDone(f);});
       generateAsarArchive(f.src[0], dest, function(){eachDone(f);});
     });
   });
