@@ -34,9 +34,6 @@ exports.asar = {
     var expected = grunt.file.read('test/expected/fixtures.asar');
     test.equal(actual, expected, 'should create archive from test directory.');
 
-    console.log("\nactual\n", actual);
-    console.log("\nexpected\n", expected);
-
     test.done();
   },
 };
