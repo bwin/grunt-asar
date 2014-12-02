@@ -69,7 +69,6 @@ function generateAsarArchive(srcPath, destFile, cb) {
     }
 
     disk.writeFilesystem(destFile, filesystem, files, function() {
-      console.log("yes");
       cb(null);
     });
   });
