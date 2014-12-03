@@ -34,9 +34,17 @@ module.exports = function(grunt) {
         options: {
         },
         files: {
-          'tmp/fixtures.asar': ['test/fixtures/']
+          'tmp/basic_test.asar': ['test/fixtures/']
         }
       },
+
+      expand_test: {
+        cwd: 'test/fixtures',
+        src: ['**/*', '!**/*.png', '!dir1', '!dir1/**/*'],
+        expand: true,
+        dest: 'tmp/expand_test.asar'
+      }
+
     },
 
     // Unit tests.

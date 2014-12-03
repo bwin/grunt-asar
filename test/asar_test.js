@@ -30,8 +30,17 @@ exports.asar = {
   basic_test: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/fixtures.asar');
-    var expected = grunt.file.read('test/expected/fixtures.asar');
+    var actual = grunt.file.read('tmp/basic_test.asar');
+    var expected = grunt.file.read('test/expected/basic_test.asar');
+    test.equal(actual, expected, 'should create archive from test directory.');
+
+    test.done();
+  },
+  expand_test: function(test) {
+    test.expect(1);
+
+    var actual = grunt.file.read('tmp/expand_test.asar');
+    var expected = grunt.file.read('test/expected/expand_test.asar');
     test.equal(actual, expected, 'should create archive from test directory.');
 
     test.done();

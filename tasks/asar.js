@@ -16,31 +16,40 @@ var disk = require('asar/lib/disk');
 
 var glob = require('glob');
 
-function generateAsarArchive(srcPath, destFile, cb) {
-  glob('**/*', {cwd: srcPath}, function(err, entries) {
-    if(err) { return cb(err); }
-    var filesystem = new Filesystem(srcPath);
-    var files = [];
-    var i, file, stat;
+function generateAsarArchiveFromFiles(basepath, filenames, destFile, cb) {
+  var filesystem = new Filesystem(basepath);
+  var files = [];
+  var i, file, stat, filename;
 
-    for(i in entries) {
-      file = path.join(process.cwd(), srcPath, entries[i]);
-      stat = fs.lstatSync(file);
-      if(stat.isDirectory()) {
-        filesystem.insertDirectory(file);
-      }
-      else if(stat.isSymbolicLink()) {
-        filesystem.insertLink(file, stat);
-      }
-      else {
-        filesystem.insertFile(file, stat);
-        files.push(file);
-      }
+  for(i in filenames) {
+    filename = filenames[i];
+    if('object' === typeof filename) {
+      filename = filename.src[0];
     }
+    console.log("path.join", process.cwd(), filename);
+    file = path.join(process.cwd(), filename);
+    stat = fs.lstatSync(file);
+    if(stat.isDirectory()) {
+      filesystem.insertDirectory(file);
+    }
+    else if(stat.isSymbolicLink()) {
+      filesystem.insertLink(file, stat);
+    }
+    else {
+      filesystem.insertFile(file, stat);
+      files.push(file);
+    }
+  }
 
-    disk.writeFilesystem(destFile, filesystem, files, function() {
-      cb(null);
-    });
+  disk.writeFilesystem(destFile, filesystem, files, function() {
+    cb(null);
+  });
+}
+
+function generateAsarArchive(srcPath, destFile, cb) {
+  glob(''+srcPath+'/**/*', {}, function(err, entries) {
+    if(err) { return cb(err); }
+    generateAsarArchiveFromFiles(srcPath, entries, destFile, cb);
   });
 }
 
@@ -62,13 +71,23 @@ module.exports = function(grunt) {
       }
     };
 
-    this.files.forEach(function(f) {
-      var dest = path.join(process.cwd(), f.dest);
-      
-      // to create the dir if necessary we're creating an empty file.
+    if(this.data.expand) {
+      var dest = this.data.dest;
       grunt.file.write(dest, '');
-      
-      generateAsarArchive(f.src[0], dest, function(){eachDone(f);});
-    });
+      generateAsarArchiveFromFiles(this.data.cwd, this.files, this.data.dest, function() {
+        grunt.log.writeln('File ' + dest + ' created.');
+        done();
+      });
+    }
+    else {
+      this.files.forEach(function(f) {
+        var dest = path.join(process.cwd(), f.dest);
+        
+        // to create the dir if necessary we're creating an empty file.
+        grunt.file.write(dest, '');
+        
+        generateAsarArchive(f.src[0], dest, function(){eachDone(f);});
+      });
+    }
   });
 };

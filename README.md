@@ -8,6 +8,8 @@
 
 This exposes just the most basic functionality at the moment. Convert a whole directory into an [asar](https://github.com/atom/asar) archive. Symbolic links are currently not tested.
 
+Now supports grunt file expansion.
+
 ## Getting Started
 This plugin requires Grunt `~0.4.0`
 
@@ -35,9 +37,15 @@ grunt.initConfig({
       // Target-specific file lists and/or options go here.
       files: {
         // Your file mappings go here
-        // Currently only a single directory can be used as file-src.
         // 'archivename.asar': ['some/path'],
       },
+    },
+    your_advanced_target: {
+      cwd: 'some/path',
+      // Skip png's and the folder 'dir1' and its contents.
+      src: ['**/*', '!**/*.png', '!dir1', '!dir1/**/*'],
+      expand: true,
+      dest: 'archivename2.asar'
     },
   },
 });
@@ -72,6 +80,22 @@ grunt.initConfig({
       files: {
         'modules.asar': ['node_modules/'],
       },
+    },
+  },
+});
+```
+
+You can also use grunt file expansion to filter.
+
+```js
+grunt.initConfig({
+  asar: {
+    my_app: {
+      cwd: 'some/path',
+      // Skip png's and the folder 'dir1' and its contents.
+      src: ['**/*', '!**/*.png', '!dir1', '!dir1/**/*'],
+      expand: true,
+      dest: 'my_app.asar'
     },
   },
 });
