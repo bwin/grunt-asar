@@ -16,39 +16,6 @@ var disk = require('asar/lib/disk');
 
 var glob = require('glob');
 
-// begin monkey-patch asar/lib/disk to accept callbacks
-var pickle = require('asar/node_modules/chromium-pickle');
-
-var writeFileListToStream = function(out, list, cb) {
-  if (list.length === 0) {
-    out.end();
-    if('function' === typeof cb) {
-      cb(null);
-    }
-    return;
-  }
-
-  var src = fs.createReadStream(list[0]);
-  src.on('end', writeFileListToStream.bind(this, out, list.slice(1), cb));
-  src.pipe(out, { end: false });
-};
-
-// monkey-patched to accept callback
-disk.writeFilesystem = function(dest, filesystem, files, cb) {
-  var headerPickle = pickle.createEmpty();
-  headerPickle.writeString(JSON.stringify(filesystem.header));
-  var headerBuf = headerPickle.toBuffer();
-
-  var sizePickle = pickle.createEmpty();
-  sizePickle.writeUInt32(headerBuf.length);
-  var sizeBuf = sizePickle.toBuffer();
-
-  var out = fs.createWriteStream(dest);
-  out.write(sizeBuf);
-  out.write(headerBuf, writeFileListToStream.bind(this, out, files, cb));
-};
-// end monkey-patch asar/lib/disk to accept callbacks
-
 function generateAsarArchive(srcPath, destFile, cb) {
   glob('**/*', {cwd: srcPath}, function(err, entries) {
     if(err) { return cb(err); }
@@ -60,7 +27,7 @@ function generateAsarArchive(srcPath, destFile, cb) {
       file = path.join(process.cwd(), srcPath, entries[i]);
       stat = fs.lstatSync(file);
       if(stat.isDirectory()) {
-        filesystem.insertDirectoy(file);
+        filesystem.insertDirectory(file);
       }
       else if(stat.isSymbolicLink()) {
         filesystem.insertLink(file, stat);
