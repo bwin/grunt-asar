@@ -26,7 +26,6 @@ function generateAsarArchiveFromFiles(basepath, filenames, destFile, cb) {
     if('object' === typeof filename) {
       filename = filename.src[0];
     }
-    console.log("path.join", process.cwd(), filename);
     file = path.join(process.cwd(), filename);
     stat = fs.lstatSync(file);
     if(stat.isDirectory()) {
