@@ -58,9 +58,12 @@ function generateAsarArchive(srcPath, destFile, cb) {
 
     for(i in entries) {
       file = path.join(process.cwd(), srcPath, entries[i]);
-      stat = fs.statSync(file);
+      stat = fs.lstatSync(file);
       if(stat.isDirectory()) {
         filesystem.insertDirectoy(file);
+      }
+      else if(stat.isSymbolicLink()) {
+        filesystem.insertLink(file, stat);
       }
       else {
         filesystem.insertFile(file, stat);

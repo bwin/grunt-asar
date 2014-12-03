@@ -6,7 +6,7 @@
 
 > Grunt plugin to generate atom-shell asar packages.
 
-This exposes just the most basic functionality at the moment. Convert a whole directory into an [asar](https://github.com/atom/asar) archive. Symbolic links are currently not supported.
+This exposes just the most basic functionality at the moment. Convert a whole directory into an [asar](https://github.com/atom/asar) archive. Symbolic links are currently not tested.
 
 ## Getting Started
 This plugin requires Grunt `~0.4.0`
