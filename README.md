@@ -36,16 +36,16 @@ grunt.initConfig({
     your_target: {
       // Target-specific file lists and/or options go here.
       files: {
-        // Your file mappings go here
+        // Your simple dir-to-file mappings go here
         // 'archivename.asar': ['some/path'],
       },
     },
     your_advanced_target: {
-      cwd: 'some/path',
-      // Skip png's and the folder 'dir1' and its contents.
-      src: ['**/*', '!**/*.png', '!dir1', '!dir1/**/*'],
-      expand: true,
-      dest: 'archivename2.asar'
+      // Your expanding patterns go like this
+      // cwd: 'some/path',
+      // src: ['**/*'],
+      // expand: true,
+      // dest: 'archivename.asar'
     },
   },
 });
