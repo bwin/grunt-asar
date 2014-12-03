@@ -1,1 +1,2 @@
 content of file1
+this time with unix line-endings
