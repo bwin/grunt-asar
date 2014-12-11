@@ -1,6 +1,6 @@
 # grunt-asar
 
-[![build status](http://img.shields.io/travis/bwin/grunt-asar.svg?style=flat-square)](https://travis-ci.org/bwin/grunt-asar)
+[![build status](http://img.shields.io/travis/bwin/grunt-asar/master.svg?style=flat-square)](https://travis-ci.org/bwin/grunt-asar)
 [![dependencies](http://img.shields.io/david/bwin/grunt-asar.svg?style=flat-square)](https://david-dm.org/bwin/grunt-asar)
 [![npm version](http://img.shields.io/npm/v/grunt-asar.svg?style=flat-square)](https://npmjs.org/package/grunt-asar)
 
