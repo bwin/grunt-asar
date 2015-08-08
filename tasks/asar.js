@@ -35,8 +35,11 @@ function generateAsarArchiveFromFiles(basepath, filenames, destFile, cb) {
       filesystem.insertLink(file, stat);
     }
     else {
-      filesystem.insertFile(file, stat);
-      files.push(file);
+      filesystem.insertFile(file, false, stat);
+      files.push({
+        filename: file,
+        unpack: false
+      });
     }
   }
 
