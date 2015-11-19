@@ -11,8 +11,10 @@
 var path = require('path');
 var fs = require('fs');
 
+var asar = require('asar');
 var Filesystem = require('asar/lib/filesystem');
 var disk = require('asar/lib/disk');
+var mkdirp = require('mkdirp');
 
 var glob = require('glob');
 
@@ -29,19 +31,27 @@ function generateAsarArchiveFromFiles(basepath, filenames, destFile, cb) {
     file = path.join(process.cwd(), filename);
     stat = fs.lstatSync(file);
     if(stat.isDirectory()) {
-      filesystem.insertDirectory(file);
+      filesystem.insertDirectory(file, false);
     }
     else if(stat.isSymbolicLink()) {
       filesystem.insertLink(file, stat);
     }
     else {
-      filesystem.insertFile(file, stat);
-      files.push(file);
+      filesystem.insertFile(file, false, stat);
+      files.push({
+        filename: file,
+        unpack: false
+      });
     }
   }
 
-  disk.writeFilesystem(destFile, filesystem, files, function() {
-    cb(null);
+  mkdirp(path.dirname(destFile), function(error) {
+    if (error) {
+      return callback(error);
+    }
+    disk.writeFilesystem(destFile, filesystem, files, function() {
+      cb(null);
+    });
   });
 }
 
@@ -50,6 +60,7 @@ function generateAsarArchive(srcPath, destFile, cb) {
     if(err) { return cb(err); }
     generateAsarArchiveFromFiles(srcPath, entries, destFile, cb);
   });
+  //asar.createPackage(srcPath, destFile, cb);
 }
 
 module.exports = function(grunt) {
@@ -61,6 +72,7 @@ module.exports = function(grunt) {
 
     var target = this.target;
     var done = this.async();
+
 
     var filesLeft = this.files.length;
     var eachDone = function(f) {
