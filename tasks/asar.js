@@ -98,7 +98,7 @@ module.exports = function(grunt) {
             return callback(err);
           }
 
-          grunt.log.writeln('Created ' + chalk.cyan(asarFilePath));
+          grunt.log.ok('Created ' + chalk.cyan(asarFilePath));
           return callback();
         });
       });
