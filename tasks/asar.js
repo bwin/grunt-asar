@@ -73,7 +73,7 @@ module.exports = function(grunt) {
         } else {
           // Asar filesystem expects a directory to be added before files for that directory can be added
           dirname = path.dirname(src);
-          if (!directories[dirname]) {
+          if (dirname && dirname !== '.' && !directories[dirname]) {
             insertDirectory(dirname);
           }
 
